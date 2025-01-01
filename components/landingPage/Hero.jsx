@@ -4,17 +4,21 @@ import HeroImage from "@/assets/images/Teaching-cuate.png";
 const Hero = () => {
   return (
     <section className="bg-white text-gray-800">
-      <div className="container mx-auto px-6 py-12 lg:py-20">
+      <div className="container mx-auto px-6 py-12 lg:py-18">
         <div className="flex flex-col lg:flex-row items-center">
           {/* Left Content */}
           <div className="w-full lg:w-1/2 text-center lg:text-left">
-            <p className="text-orange-500 font-semibold">Welcome to GradeFlow</p>
+            <p className="text-orange-500 font-semibold">
+              Welcome to GradeFlow
+            </p>
             <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-              Manage Your <span className="text-orange-500">School</span> with Ease
+              Manage Your <span className="text-orange-500">School</span> with
+              Ease
             </h1>
             <p className="mt-6 text-lg text-gray-600">
-              Simplify the management of students, teachers, classes, and scores in one place. 
-              GradeFlow helps you streamline your operations and save time.
+              Simplify the management of students, teachers, classes, and scores
+              in one place. GradeFlow helps you streamline your operations and
+              save time.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
               <a
@@ -41,7 +45,12 @@ const Hero = () => {
               height={500}
               className="w-full h-auto"
             />
-            <a href="https://storyset.com/education" className="absolute bg-slate-300 text-white bottom-0 right-0 text-xs rounded-sm">Image source Education illustrations by Storyset</a>
+            <a
+              href="https://storyset.com/education"
+              className="absolute bg-slate-300 text-white bottom-0 right-0 text-xs rounded-sm"
+            >
+              Image source: Education illustrations by Storyset
+            </a>
           </div>
         </div>
       </div>
