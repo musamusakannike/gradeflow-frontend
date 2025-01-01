@@ -86,7 +86,7 @@ const Navbar = () => {
               Contact
             </Link>
             <Link
-              href="/login"
+              href="/auth/login"
               className="block py-2 text-white bg-orange-500 rounded-lg shadow-md hover:bg-orange-600 transition text-center"
             >
               Login
