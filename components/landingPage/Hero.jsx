@@ -1,5 +1,6 @@
 import Image from "next/image";
 import HeroImage from "@/assets/images/Teaching-cuate.png";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -21,18 +22,18 @@ const Hero = () => {
               save time.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-              <a
-                href="/signup"
+              <Link
+                href="/auth/create"
                 className="px-6 py-3 text-lg font-medium text-white bg-orange-500 rounded-lg shadow-md hover:bg-orange-600 transition"
               >
                 Get Started
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#features"
                 className="px-6 py-3 text-lg font-medium text-orange-500 border-2 border-orange-500 rounded-lg hover:bg-orange-100 transition"
               >
                 Learn More
-              </a>
+              </Link>
             </div>
           </div>
 
