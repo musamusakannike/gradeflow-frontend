@@ -8,8 +8,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        orange: {
+          500: '#F97316', // Custom orange shade for buttons and accents
+          600: '#EA580C', // Darker orange for hover states
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'], // Modern sans-serif font
       },
     },
   },
