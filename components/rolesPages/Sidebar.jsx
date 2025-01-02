@@ -7,8 +7,9 @@ const Sidebar = ({ role }) => {
   const links = {
     admin: [
       { name: "Dashboard", path: "/admin/dashboard" },
-      { name: "Manage Schools", path: "/admin/manage-schools" },
-      { name: "Reports", path: "/admin/reports" },
+      { name: "Classes", path: "/admin/manage-classes" },
+      { name: "Teachers", path: "/admin/manage-teachers" },
+      { name: "Students", path: "/admin/manage-students" },
     ],
     teacher: [
       { name: "Dashboard", path: "/teacher/dashboard" },
@@ -23,7 +24,7 @@ const Sidebar = ({ role }) => {
   };
 
   return (
-    <aside className="w-64 bg-white h-screen p-6 shadow-lg">
+    <aside className="w-64 bg-white h-screen p-6 shadow-lg sticky top-0">
       <nav>
         <h2 className="text-2xl font-bold mb-6 text-gray-700">
           Grade<span className="text-orange-500">Flow</span>
