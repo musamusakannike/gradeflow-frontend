@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import adminService from "@/services/admin.service";
 import Modal from "@/components/ui/Modal";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const ClassesPage = () => {
   const [classes, setClasses] = useState([]);
@@ -124,7 +125,8 @@ const ClassesPage = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {classes.map((cls, i) => (
-            <div
+            <Link
+              href={`/admin/classes/${cls._id}`}
               key={i}
               className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between"
             >
@@ -156,7 +158,7 @@ const ClassesPage = () => {
                   Delete
                 </button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
