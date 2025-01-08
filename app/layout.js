@@ -1,6 +1,6 @@
 import { Poppins } from "next/font/google";
 import "./styles/globals.css";
-import {Toaster} from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   variable: "--font-poppins",
