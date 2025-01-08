@@ -7,9 +7,9 @@ const Sidebar = ({ role }) => {
   const links = {
     admin: [
       { name: "Dashboard", path: "/admin/dashboard" },
-      { name: "Classes", path: "/admin/manage-classes" },
-      { name: "Teachers", path: "/admin/manage-teachers" },
-      { name: "Students", path: "/admin/manage-students" },
+      { name: "Classes", path: "/admin/classes" },
+      { name: "Teachers", path: "/admin/teachers" },
+      { name: "Students", path: "/admin/students" },
     ],
     teacher: [
       { name: "Dashboard", path: "/teacher/dashboard" },
