@@ -80,6 +80,14 @@ const adminService = {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
+  getStudentsInClass: async (classId, page = 1, limit = 10) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.get(`class/list-students`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: { classId, page, limit },
+    });
+    return response.data.data;
+  },
 };
 
 export default adminService;
