@@ -57,7 +57,12 @@ const adminService = {
     });
     return response.data.data;
   },
-
+  deleteTeacher: async (teacherId) => {
+    const token = localStorage.getItem("authToken");
+    await API.delete(`admin/delete-teacher/${teacherId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
   addClass: async (data) => {
     const token = localStorage.getItem("authToken");
     const response = await API.post("class/create", data, {
