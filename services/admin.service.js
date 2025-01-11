@@ -93,6 +93,13 @@ const adminService = {
     });
     return response.data.data;
   },
+  addTeacher: async (data) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.post("auth/admin/create/teacher", data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  },
 };
 
 export default adminService;
