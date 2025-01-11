@@ -21,22 +21,21 @@ const ClassesPage = () => {
   });
   const [currentClass, setCurrentClass] = useState(null);
   const [deleteClassName, setDeleteClassName] = useState("");
+  const fetchData = async () => {
+    try {
+      const classData = await adminService.getClasses();
+      const teacherData = await adminService.getTeachers();
+      setClasses(classData);
+      setTeachers(teacherData);
+    } catch (err) {
+      console.error("Failed to fetch data", err);
+      toast.error("Failed to fetch data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const classData = await adminService.getClasses();
-        const teacherData = await adminService.getTeachers();
-        setClasses(classData);
-        setTeachers(teacherData);
-      } catch (err) {
-        console.error("Failed to fetch data", err);
-        toast.error("Failed to fetch data. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -54,6 +53,7 @@ const ClassesPage = () => {
       setShowAddModal(false);
       setNewClassData({ name: "", teacherId: "" });
       toast.success("Class added successfully!");
+      fetchData();
     } catch (err) {
       console.error("Failed to add class", err);
       toast.error("Failed to add class. Please try again.");
@@ -79,6 +79,7 @@ const ClassesPage = () => {
       setShowUpdateModal(false);
       setCurrentClass(null);
       toast.success("Class updated successfully!");
+
     } catch (err) {
       console.error("Failed to update class", err);
       toast.error("Failed to update class. Please try again.");
@@ -98,6 +99,7 @@ const ClassesPage = () => {
       setCurrentClass(null);
       setDeleteClassName("");
       toast.success("Class deleted successfully!");
+      fetchData();
     } catch (err) {
       console.error("Failed to delete class", err);
       toast.error("Failed to delete class. Please try again.");
@@ -126,7 +128,7 @@ const ClassesPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {classes.map((cls, i) => (
             <Link
-              href={`/admin/classes/${cls._id}`}
+              href={`/admin/classes/${cls?._id || "#"}`}
               key={i}
               className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between"
             >
@@ -140,7 +142,9 @@ const ClassesPage = () => {
               </div>
               <div className="mt-4 flex justify-between">
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent Link navigation
+                    e.stopPropagation(); // Prevent event bubbling
                     setCurrentClass(cls);
                     setShowUpdateModal(true);
                   }}
@@ -149,7 +153,9 @@ const ClassesPage = () => {
                   Edit
                 </button>
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent Link navigation
+                    e.stopPropagation(); // Prevent event bubbling
                     setCurrentClass(cls);
                     setShowDeleteModal(true);
                   }}
@@ -279,7 +285,8 @@ const ClassesPage = () => {
       >
         <div>
           <p className="text-gray-700 mb-4">
-            Please type the class name <strong>{currentClass?.name}</strong> to confirm deletion.
+            Please type the class name <strong>{currentClass?.name}</strong> to
+            confirm deletion.
           </p>
           <input
             type="text"
