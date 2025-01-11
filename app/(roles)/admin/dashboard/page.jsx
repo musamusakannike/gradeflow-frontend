@@ -13,6 +13,7 @@ const AdminDashboard = () => {
     totalStudents: 0,
     totalTeachers: 0,
     totalClasses: 0,
+    schoolId: "",
   });
   const [sessions, setSessions] = useState([]);
   const [currentSession, setCurrentSession] = useState(null);
@@ -125,6 +126,13 @@ const AdminDashboard = () => {
       <p className="mt-4 text-gray-600">
         Welcome back! Here&apos;s an overview of your school&apos;s statistics:
       </p>
+      {/* School ID Section */}
+      <div className="mt-6 bg-white shadow-lg rounded-lg p-4 flex items-center justify-between">
+        <span className="text-gray-700 font-bold">School ID:</span>
+        <span className="text-orange-500 font-semibold">
+          {statistics.schoolId || "Loading..."}
+        </span>
+      </div>
 
       {loading ? (
         <p className="text-orange-500 mt-6">Loading...</p>
