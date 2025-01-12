@@ -11,28 +11,32 @@ const SubjectsPage = () => {
   const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [currentSubject, setCurrentSubject] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Confirmation modal state
+  const [subjectToDelete, setSubjectToDelete] = useState(null); // Subject to delete
+
   const [newSubjectData, setNewSubjectData] = useState({
     name: "",
     classId: "",
     teacherId: "",
   });
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
-  const [bulkActionLoading, setBulkActionLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
-        const subjectsData = await adminService.getSubjects();
-        const classesData = await adminService.getClasses();
-        const teachersData = await adminService.getTeachers();
-        setSubjects(subjectsData);
-        setClasses(classesData);
-        setTeachers(teachersData);
+        const fetchedSubjects = await adminService.getSubjects();
+        const fetchedClasses = await adminService.getClasses();
+        const fetchedTeachers = await adminService.getTeachers();
+
+        setSubjects(fetchedSubjects);
+        setClasses(fetchedClasses);
+        setTeachers(fetchedTeachers);
       } catch (err) {
         console.error("Failed to fetch data", err);
-        toast.error("Failed to fetch data. Please try again.");
+        toast.error("Failed to load data. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -57,49 +61,101 @@ const SubjectsPage = () => {
       toast.success("Subject added successfully!");
     } catch (err) {
       console.error("Failed to add subject", err);
-      toast.error(err.response?.data?.message || "Failed to add subject.");
+      toast.error("Failed to add subject. Please try again.");
     }
   };
 
-  const handleBulkToggleJoinPermission = async (allowStudentAddition) => {
-    if (selectedSubjects.length === 0) {
-      toast.error("No subjects selected for bulk action.");
+  const handleEditSubject = async () => {
+    if (
+      !currentSubject.name ||
+      !currentSubject.classId ||
+      !currentSubject.teacherId
+    ) {
+      toast.error("All fields are required.");
       return;
     }
 
     try {
-      setBulkActionLoading(true);
-      await adminService.toggleJoinPermissionsBulk(
-        selectedSubjects,
-        allowStudentAddition
+      const updatedSubject = await adminService.editSubject(
+        currentSubject._id,
+        currentSubject
       );
-      setSubjects((prevSubjects) =>
-        prevSubjects.map((subject) =>
-          selectedSubjects.includes(subject._id)
-            ? { ...subject, allowStudentAddition }
-            : subject
+      setSubjects((prev) =>
+        prev.map((subject) =>
+          subject._id === updatedSubject._id ? updatedSubject : subject
         )
       );
-      setSelectedSubjects([]);
-      toast.success(
-        `Subject join permission ${
-          allowStudentAddition ? "enabled" : "disabled"
-        } for selected subjects.`
-      );
+      setShowEditModal(false);
+      setCurrentSubject(null);
+      toast.success("Subject updated successfully!");
     } catch (err) {
-      console.error("Failed to toggle join permission", err);
-      toast.error("Failed to toggle join permission. Please try again.");
-    } finally {
-      setBulkActionLoading(false);
+      console.error("Failed to update subject", err);
+      toast.error("Failed to update subject. Please try again.");
     }
   };
 
-  const toggleSubjectSelection = (subjectId) => {
-    setSelectedSubjects((prev) =>
-      prev.includes(subjectId)
-        ? prev.filter((id) => id !== subjectId)
-        : [...prev, subjectId]
-    );
+  const handleConfirmDelete = async () => {
+    if (!subjectToDelete) return;
+
+    try {
+      await adminService.deleteSubject(subjectToDelete._id);
+      setSubjects((prev) =>
+        prev.filter((subject) => subject._id !== subjectToDelete._id)
+      );
+      setShowDeleteModal(false);
+      setSubjectToDelete(null);
+      toast.success("Subject deleted successfully!");
+    } catch (err) {
+      console.error("Failed to delete subject", err);
+      toast.error("Failed to delete subject. Please try again.");
+    }
+  };
+
+  const handleToggleAllJoinPermissions = async (allowStudentAddition) => {
+    try {
+      await adminService.toggleJoinPermissionsBulk(
+        subjects.map((subject) => subject._id),
+        allowStudentAddition
+      );
+      setSubjects((prevSubjects) =>
+        prevSubjects.map((subject) => ({
+          ...subject,
+          allowStudentAddition,
+        }))
+      );
+      toast.success(
+        `Join permissions ${
+          allowStudentAddition ? "enabled" : "disabled"
+        } for all subjects.`
+      );
+    } catch (err) {
+      console.error("Failed to toggle join permissions", err);
+      toast.error("Failed to toggle join permissions. Please try again.");
+    }
+  };
+
+  const handleToggleJoinPermission = async (subjectId, currentState) => {
+    try {
+      await adminService.toggleSubjectJoinPermission(subjectId, !currentState);
+      setSubjects((prev) =>
+        prev.map((subject) =>
+          subject._id === subjectId
+            ? { ...subject, allowStudentAddition: !currentState }
+            : subject
+        )
+      );
+      toast.success(
+        `Joining ${!currentState ? "enabled" : "disabled"} for this subject.`
+      );
+    } catch (err) {
+      console.error("Failed to toggle join permission", err);
+      toast.error("Failed to update join permission.");
+    }
+  };
+
+  const openDeleteModal = (subject) => {
+    setSubjectToDelete(subject);
+    setShowDeleteModal(true);
   };
 
   return (
@@ -113,93 +169,181 @@ const SubjectsPage = () => {
           + Add Subject
         </button>
       </div>
-
+      <div className="flex justify-between items-center mb-4">
+        <button
+          onClick={() => handleToggleAllJoinPermissions(true)}
+          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 shadow"
+        >
+          Enable Join for All
+        </button>
+        <button
+          onClick={() => handleToggleAllJoinPermissions(false)}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 shadow"
+        >
+          Disable Join for All
+        </button>
+      </div>
       {loading ? (
-        <p className="text-orange-500 mt-6">Loading...</p>
+        <p className="text-orange-500">Loading...</p>
+      ) : subjects.length === 0 ? (
+        <p className="text-gray-600">No subjects available.</p>
       ) : (
-        <>
-          <div className="flex justify-between items-center mb-4">
-            <button
-              onClick={() => handleBulkToggleJoinPermission(true)}
-              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 shadow"
-              disabled={bulkActionLoading}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {subjects.map((subject) => (
+            <div
+              key={subject._id}
+              className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between"
             >
-              Enable Join for Selected
-            </button>
-            <button
-              onClick={() => handleBulkToggleJoinPermission(false)}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 shadow"
-              disabled={bulkActionLoading}
-            >
-              Disable Join for Selected
-            </button>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {subjects.map((subject) => (
-              <div
-                key={subject._id}
-                className={`bg-white shadow-lg rounded-lg p-6 ${
-                  selectedSubjects.includes(subject._id)
-                    ? "border-2 border-orange-500"
-                    : ""
-                }`}
-              >
+              <div>
                 <h4 className="text-lg font-bold text-gray-800">
                   {subject.name}
                 </h4>
                 <p className="text-gray-600">
-                  Class: {subject.classId?.name || "N/A"}
+                  Class: {subject.classId?.name || "Unassigned"}
                 </p>
                 <p className="text-gray-600">
-                  Teacher: {subject.teacherId?.fullName || "N/A"}
+                  Teacher: {subject.teacherId?.fullName || "Unassigned"}
                 </p>
-                <div className="flex items-center justify-between mt-4">
-                  <span className="text-gray-600">
-                    {subject.allowStudentAddition
-                      ? "Joining Enabled"
-                      : "Joining Disabled"}
-                  </span>
-                  <ReactSwitch
-                    onChange={() =>
-                      handleBulkToggleJoinPermission(
-                        !subject.allowStudentAddition
-                      )
-                    }
-                    checked={subject.allowStudentAddition}
-                    onColor="#f97316"
-                    offColor="#d1d5db"
-                    onHandleColor="#ffffff"
-                    offHandleColor="#ffffff"
-                    handleDiameter={22}
-                    uncheckedIcon={false}
-                    checkedIcon={false}
-                    boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                    activeBoxShadow="0px 0px 2px 3px rgba(0, 0, 0, 0.2)"
-                    height={20}
-                    width={48}
-                    className="cursor-pointer"
-                  />
-                </div>
-                <div className="mt-2">
-                  <button
-                    onClick={() => toggleSubjectSelection(subject._id)}
-                    className={`px-4 py-2 rounded-lg ${
-                      selectedSubjects.includes(subject._id)
-                        ? "bg-orange-500 text-white"
-                        : "bg-gray-100 text-gray-800 hover:bg-orange-100"
-                    }`}
-                  >
-                    {selectedSubjects.includes(subject._id)
-                      ? "Deselect"
-                      : "Select"}
-                  </button>
-                </div>
               </div>
-            ))}
-          </div>
-        </>
+              <div className="mt-4 flex items-center justify-between">
+                <span className="text-gray-600">
+                  {subject.allowStudentAddition
+                    ? "Joining Enabled"
+                    : "Joining Disabled"}
+                </span>
+                <ReactSwitch
+                  onChange={() =>
+                    handleToggleJoinPermission(
+                      subject._id,
+                      subject.allowStudentAddition
+                    )
+                  }
+                  checked={subject.allowStudentAddition}
+                  onColor="#f97316"
+                  offColor="#d1d5db"
+                  onHandleColor="#ffffff"
+                  offHandleColor="#ffffff"
+                  height={20}
+                  width={48}
+                  className="cursor-pointer"
+                />
+              </div>
+              <div className="mt-4 flex justify-between">
+                <button
+                  onClick={() => {
+                    setCurrentSubject(subject);
+                    setShowEditModal(true);
+                  }}
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => openDeleteModal(subject)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
-
+      {/* Add Subject Modal */}
+      <Modal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        title="Add New Subject"
+      >
+        {/* Add Subject Form (same as before) */}
+      </Modal>
+      {/* Edit Subject Modal */}
+      {currentSubject && (
+        <Modal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          title="Edit Subject"
+        >
+          <div>
+            <label
+              htmlFor="editSubjectName"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Subject Name
+            </label>
+            <input
+              id="editSubjectName"
+              type="text"
+              value={currentSubject.name}
+              onChange={(e) =>
+                setCurrentSubject({ ...currentSubject, name: e.target.value })
+              }
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              placeholder="e.g., Mathematics"
+            />
+            <label
+              htmlFor="editClassDropdown"
+              className="block text-gray-700 font-bold mt-4 mb-2"
+            >
+              Select Class
+            </label>
+            <select
+              id="editClassDropdown"
+              value={currentSubject.classId}
+              onChange={(e) =>
+                setCurrentSubject({
+                  ...currentSubject,
+                  classId: e.target.value,
+                })
+              }
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              {" "}
+              <option value="">Select a class</option>{" "}
+              {classes.map((cls) => (
+                <option key={cls._id} value={cls._id}>
+                  {" "}
+                  {cls.name}{" "}
+                </option>
+              ))}{" "}
+            </select>{" "}
+            <label
+              htmlFor="editTeacherDropdown"
+              className="block text-gray-700 font-bold mt-4 mb-2"
+            >
+              {" "}
+              Select Teacher{" "}
+            </label>{" "}
+            <select
+              id="editTeacherDropdown"
+              value={currentSubject.teacherId}
+              onChange={(e) =>
+                setCurrentSubject({
+                  ...currentSubject,
+                  teacherId: e.target.value,
+                })
+              }
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            >
+              {" "}
+              <option value="">Select a teacher</option>{" "}
+              {teachers.map((teacher) => (
+                <option key={teacher._id} value={teacher._id}>
+                  {" "}
+                  {teacher.fullName} - {teacher.email}{" "}
+                </option>
+              ))}{" "}
+            </select>{" "}
+            <button
+              onClick={handleEditSubject}
+              className="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded-lg hover:bg-orange-600 transition"
+            >
+              {" "}
+              Update Subject{" "}
+            </button>{" "}
+          </div>{" "}
+        </Modal>
+      )}{" "}
       {/* Add Subject Modal */}
       <Modal
         isOpen={showAddModal}
@@ -227,7 +371,7 @@ const SubjectsPage = () => {
             htmlFor="classDropdown"
             className="block text-gray-700 font-bold mt-4 mb-2"
           >
-            Assign Class
+            Select Class
           </label>
           <select
             id="classDropdown"
@@ -248,7 +392,7 @@ const SubjectsPage = () => {
             htmlFor="teacherDropdown"
             className="block text-gray-700 font-bold mt-4 mb-2"
           >
-            Assign Teacher
+            Select Teacher
           </label>
           <select
             id="teacherDropdown"
@@ -264,7 +408,7 @@ const SubjectsPage = () => {
             <option value="">Select a teacher</option>
             {teachers.map((teacher) => (
               <option key={teacher._id} value={teacher._id}>
-                {teacher.fullName}
+                {teacher.fullName} - {teacher.email}
               </option>
             ))}
           </select>
@@ -276,8 +420,34 @@ const SubjectsPage = () => {
           </button>
         </div>
       </Modal>
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Confirm Delete"
+      >
+        <div>
+          <p>
+            Are you sure you want to delete the subject "{subjectToDelete?.name}
+            "?
+          </p>
+          <div className="mt-4 flex justify-end">
+            <button
+              onClick={() => setShowDeleteModal(false)}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg mr-2 hover:bg-gray-400"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleConfirmDelete}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
-
 export default SubjectsPage;
