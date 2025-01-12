@@ -132,6 +132,21 @@ const adminService = {
     );
     return response.data.data;
   },
+  deleteSubject: async (subjectId) => {
+    const token = localStorage.getItem("authToken");
+    await API.delete(`subject/delete/${subjectId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  
+  editSubject: async (subjectId, data) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.patch(`subject/edit/${subjectId}`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  },
+  
 };
 
 export default adminService;
