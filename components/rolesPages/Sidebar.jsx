@@ -2,14 +2,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const Sidebar = ({ role }) => {
+const Sidebar = ({ role, isSidebarOpen, setIsSidebarOpen }) => {
   const pathname = usePathname();
   const links = {
     admin: [
       { name: "Dashboard", path: "/admin/dashboard" },
       { name: "Classes", path: "/admin/classes" },
       { name: "Teachers", path: "/admin/teachers" },
-      { name: "Subjects", path: "/admin/subjects"},
+      { name: "Subjects", path: "/admin/subjects" },
     ],
     teacher: [
       { name: "Dashboard", path: "/teacher/dashboard" },
@@ -24,7 +24,18 @@ const Sidebar = ({ role }) => {
   };
 
   return (
-    <aside className="w-64 bg-white h-screen p-6 shadow-lg sticky top-0">
+    <aside
+      className={`fixed z-30 top-0 left-0 h-screen bg-white w-64 p-6 shadow-lg transform transition-transform duration-300 ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      } lg:translate-x-0 lg:relative`}
+    >
+      <button
+        onClick={() => setIsSidebarOpen(false)}
+        className="lg:hidden absolute top-4 right-4 text-gray-700"
+        aria-label="Close Sidebar"
+      >
+        ✖
+      </button>
       <nav>
         <h2 className="text-2xl font-bold mb-6 text-gray-700">
           Grade<span className="text-orange-500">Flow</span>

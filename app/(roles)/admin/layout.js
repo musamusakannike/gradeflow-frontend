@@ -1,26 +1,22 @@
-import { Poppins } from "next/font/google";
-import "../../styles/globals.css";
+"use client";
+import { useState } from "react";
 import Sidebar from "@/components/rolesPages/Sidebar";
 import RolesNavbar from "@/components/rolesPages/RolesNavbar";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-});
-
-export const metadata = {
-  title: "Admin Dashboard",
-  description: "A School Management System",
-};
-
 export default function RootLayout({ children }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div>
       <div className="flex">
-        <Sidebar role="admin" />
+        {/* Pass the toggle functionality to the Sidebar */}
+        <Sidebar
+          role="admin"
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
         <main className="flex-1">
-          <RolesNavbar role="admin" />
+          <RolesNavbar setIsSidebarOpen={setIsSidebarOpen} />
           {children}
         </main>
       </div>
