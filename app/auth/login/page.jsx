@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ClipLoader } from "react-spinners"; // Import spinner
 import authService from "@/services/auth.service";
 
 const Login = () => {
@@ -13,6 +14,7 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
   const router = useRouter();
 
   // Handle form input changes
@@ -25,6 +27,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true); // Set loading to true when login starts
     try {
       let response;
       if (role === "admin") {
@@ -63,6 +66,8 @@ const Login = () => {
       setError(
         err.response?.data?.message || "An error occurred. Please try again."
       );
+    } finally {
+      setLoading(false); // Set loading to false when request completes
     }
   };
 
@@ -142,9 +147,14 @@ const Login = () => {
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button
               type="submit"
-              className="w-full bg-orange-500 text-white font-bold py-2 rounded-lg hover:bg-orange-600 transition"
+              disabled={loading} // Disable button while loading
+              className="w-full bg-orange-500 text-white font-bold py-2 rounded-lg hover:bg-orange-600 transition flex justify-center items-center"
             >
-              Log In
+              {loading ? (
+                <ClipLoader size={20} color="#fff" /> // Display spinner
+              ) : (
+                "Log In"
+              )}
             </button>
           </form>
         </div>
