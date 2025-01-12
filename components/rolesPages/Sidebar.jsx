@@ -9,6 +9,7 @@ const Sidebar = ({ role }) => {
       { name: "Dashboard", path: "/admin/dashboard" },
       { name: "Classes", path: "/admin/classes" },
       { name: "Teachers", path: "/admin/teachers" },
+      { name: "Subjects", path: "/admin/subjects"},
     ],
     teacher: [
       { name: "Dashboard", path: "/teacher/dashboard" },
