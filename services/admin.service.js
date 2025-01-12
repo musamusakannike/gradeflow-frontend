@@ -100,6 +100,38 @@ const adminService = {
     });
     return response.data.data;
   },
+  getSubjects: async () => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.get("subject/list", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data; // Returns list of subjects
+  },
+  addSubject: async (data) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.post("subject/create", data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  },
+  toggleSubjectJoinPermission: async (subjectId, allowStudentAddition) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.patch(
+      "subject/toggle-join-permission",
+      { subjectId, allowStudentAddition },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data.data;
+  },
+  toggleJoinPermissionsBulk: async (subjectIds, allowStudentAddition) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.patch(
+      "subject/toggle-join-permissions-bulk",
+      { subjectIds, allowStudentAddition },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data.data;
+  },
 };
 
 export default adminService;
