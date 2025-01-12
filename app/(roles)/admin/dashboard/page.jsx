@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import RolesNavbar from "@/components/rolesPages/RolesNavbar";
-import Sidebar from "@/components/rolesPages/Sidebar";
 import adminService from "@/services/admin.service";
 import ReactSwitch from "react-switch";
 import Modal from "@/components/ui/Modal";
