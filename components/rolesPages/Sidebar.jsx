@@ -42,7 +42,7 @@ const Sidebar = ({ role, isSidebarOpen, setIsSidebarOpen }) => {
         </h2>
         <ul className="space-y-4">
           {links[role].map((link) => {
-            const isActive = pathname === link.path;
+            const isActive = pathname.startsWith(link.path);
             return (
               <li key={link.name}>
                 <Link
