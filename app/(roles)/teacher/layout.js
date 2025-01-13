@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
       <div className="flex">
         <Sidebar role="teacher" />
         <main className="flex-1">
-          <RolesNavbar role="admin" />
+          <RolesNavbar role="Teacher" />
           {children}
         </main>
       </div>
