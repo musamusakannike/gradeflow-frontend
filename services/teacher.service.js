@@ -70,6 +70,16 @@ const teacherService = {
     );
     return response.data.data;
   },
+  getClassStudents: async (classId, page = 1, limit = 20) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.get(
+      `class/list-students?classId=${classId}&page=${page}&limit=${limit}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data.data;
+  },
 };
 
 export default teacherService;
