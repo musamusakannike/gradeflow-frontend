@@ -44,6 +44,32 @@ const teacherService = {
     });
     return response.data.data; // Returns the updated subject
   },
+  getTeacherClasses: async () => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.get("teacher/classes", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data; // Returns the list of classes
+  },
+  getTeacherSubjects: async () => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.get("subject/teacher/subjects", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  },
+
+  toggleSubjectJoinPermission: async (subjectId, allowStudentAddition) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.patch(
+      "subject/toggle-join-permission",
+      { subjectId, allowStudentAddition },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data.data;
+  },
 };
 
 export default teacherService;
