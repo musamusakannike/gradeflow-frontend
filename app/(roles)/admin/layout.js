@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
           setIsSidebarOpen={setIsSidebarOpen}
         />
         <main className="flex-1">
-          <RolesNavbar setIsSidebarOpen={setIsSidebarOpen} />
+          <RolesNavbar setIsSidebarOpen={setIsSidebarOpen} role={"Admin"} />
           {children}
         </main>
       </div>
