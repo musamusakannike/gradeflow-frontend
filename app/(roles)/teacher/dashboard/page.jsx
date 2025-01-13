@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import teacherService from "@/services/teacher.service";
+import { useRouter } from "next/navigation";
 
 const TeacherDashboard = () => {
   const [statistics, setStatistics] = useState({
@@ -12,6 +13,7 @@ const TeacherDashboard = () => {
   });
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -77,9 +79,7 @@ const TeacherDashboard = () => {
                     <button
                       className="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded-lg hover:bg-orange-600 transition"
                       onClick={() => {
-                        toast.success(
-                          `Viewing details for ${subject.subjectName}`
-                        );
+                        router.push(`/teacher/subjects/${subject._id}`);
                       }}
                     >
                       View Details
@@ -104,9 +104,7 @@ const TeacherDashboard = () => {
                     <button
                       className="mt-4 w-full bg-orange-500 text-white font-bold py-2 rounded-lg hover:bg-orange-600 transition"
                       onClick={() => {
-                        toast.success(
-                          `Viewing details for ${classItem.className}`
-                        );
+                        router.push(`/teacher/classes/${classItem._id}`);
                       }}
                     >
                       View Details
