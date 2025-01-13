@@ -1,6 +1,6 @@
 "use client";
 
-const RolesNavbar = ({ setIsSidebarOpen }) => {
+const RolesNavbar = ({ setIsSidebarOpen, role }) => {
   return (
     <nav className="bg-white shadow p-4 flex items-center justify-between">
       <button
@@ -10,7 +10,7 @@ const RolesNavbar = ({ setIsSidebarOpen }) => {
       >
         ☰
       </button>
-      <h1 className="text-lg font-bold text-gray-700">Admin Dashboard</h1>
+      <h1 className="text-lg font-bold text-gray-700">{role} Dashboard</h1>
     </nav>
   );
 };
