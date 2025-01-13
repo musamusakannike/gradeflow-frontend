@@ -25,7 +25,7 @@ const Sidebar = ({ role, isSidebarOpen, setIsSidebarOpen }) => {
 
   return (
     <aside
-      className={`fixed z-30 top-0 left-0 h-screen bg-white w-64 p-6 shadow-lg transform transition-transform duration-300 ${
+      className={`fixed z-30 top-0 left-0 h-screen bg-white w-64 p-6 shadow-lg md:shadow-none transform transition-transform duration-300 ${
         isSidebarOpen ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0 lg:relative`}
     >
