@@ -72,29 +72,53 @@ const AdminStudentsPage = () => {
       ) : students.length === 0 ? (
         <p className="text-gray-600">No students found.</p>
       ) : (
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="py-2 px-4 text-left text-gray-600">Full Name</th>
-              <th className="py-2 px-4 text-left text-gray-600">Student ID</th>
-              <th className="py-2 px-4 text-left text-gray-600">Email</th>
-              <th className="py-2 px-4 text-left text-gray-600">Class</th>
-            </tr>
-          </thead>
-          <tbody>
+        <>
+          {/* Table for larger screens */}
+          <div className="hidden md:block">
+            <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="py-2 px-4 text-left text-gray-600">Full Name</th>
+                  <th className="py-2 px-4 text-left text-gray-600">Student ID</th>
+                  <th className="py-2 px-4 text-left text-gray-600">Email</th>
+                  <th className="py-2 px-4 text-left text-gray-600">Class</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((student, index) => (
+                  <tr
+                    key={index}
+                    className="border-b hover:bg-gray-100 transition-all"
+                  >
+                    <td className="py-2 px-4">{student.fullName}</td>
+                    <td className="py-2 px-4">{student.studentId}</td>
+                    <td className="py-2 px-4">{student.email || "N/A"}</td>
+                    <td className="py-2 px-4">{student.classId?.name || "N/A"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Cards for small screens */}
+          <div className="md:hidden space-y-4">
             {students.map((student, index) => (
-              <tr
+              <div
                 key={index}
-                className="border-b hover:bg-gray-100 transition-all"
+                className="bg-white shadow-md rounded-lg p-4 border"
               >
-                <td className="py-2 px-4">{student.fullName}</td>
-                <td className="py-2 px-4">{student.studentId}</td>
-                <td className="py-2 px-4">{student.email || "N/A"}</td>
-                <td className="py-2 px-4">{student.classId?.name || "N/A"}</td>
-              </tr>
+                <p className="text-gray-700 font-bold">{student.fullName}</p>
+                <p className="text-gray-500 text-sm">ID: {student.studentId}</p>
+                <p className="text-gray-500 text-sm">
+                  Email: {student.email || "N/A"}
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Class: {student.classId?.name || "N/A"}
+                </p>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </>
       )}
 
       {/* Add Student Modal */}
