@@ -80,6 +80,25 @@ const teacherService = {
     );
     return response.data.data;
   },
+  getSubjectStudents: async (subjectId) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.get(`subject/students?subjectId=${subjectId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  },
+  addStudentToSubject: async (subjectId, studentId) => {
+    const token = localStorage.getItem("authToken");
+    await API.post("subject/add-student", { subjectId, studentId }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  removeStudentFromSubject: async (subjectId, studentId) => {
+    const token = localStorage.getItem("authToken");
+    await API.post("subject/remove-student", { subjectId, studentId }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
 };
 
 export default teacherService;
