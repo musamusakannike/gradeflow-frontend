@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Admin Dashboard",
+  title: "Teacher Dashboard",
   description: "A School Management System",
 };
 
