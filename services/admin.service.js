@@ -138,7 +138,7 @@ const adminService = {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
-  
+
   editSubject: async (subjectId, data) => {
     const token = localStorage.getItem("authToken");
     const response = await API.patch(`subject/edit/${subjectId}`, data, {
@@ -146,7 +146,20 @@ const adminService = {
     });
     return response.data.data;
   },
-  
+  getStudents: async () => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.get("admin/list-students", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  },
+  addStudent: async (data) => {
+    const token = localStorage.getItem("authToken");
+    const response = await API.post("auth/admin/create/student", data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  }
 };
 
 export default adminService;
