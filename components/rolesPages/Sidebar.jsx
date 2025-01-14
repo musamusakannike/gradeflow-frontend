@@ -10,6 +10,7 @@ const Sidebar = ({ role, isSidebarOpen, setIsSidebarOpen }) => {
       { name: "Classes", path: "/admin/classes" },
       { name: "Teachers", path: "/admin/teachers" },
       { name: "Subjects", path: "/admin/subjects" },
+      { name: "Students", path: "/admin/students" },
     ],
     teacher: [
       { name: "Dashboard", path: "/teacher/dashboard" },
