@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import teacherService from "@/services/teacher.service";
 import toast from "react-hot-toast";
 import ReactSwitch from "react-switch";
+import Link from "next/link";
 
 const TeacherSubjectsPage = () => {
   const [subjects, setSubjects] = useState([]);
@@ -98,6 +99,7 @@ const TeacherSubjectsPage = () => {
                   className="cursor-pointer"
                 />
               </div>
+              <Link href={`/teacher/subjects/${subject.subjectId}`} className="text-orange-500 mt-4">View Details →</Link>
             </div>
           ))}
         </div>

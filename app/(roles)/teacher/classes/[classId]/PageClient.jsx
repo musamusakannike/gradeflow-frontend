@@ -46,12 +46,6 @@ const PageClient = ({ classId }) => {
         <p className="text-gray-600">
           Total Students: {pagination.totalStudents || 0}
         </p>
-        <button
-          onClick={() => toast.info("Add student functionality coming soon!")}
-          className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 shadow"
-        >
-          + Add Student
-        </button>
       </div>
 
       {loading ? (
