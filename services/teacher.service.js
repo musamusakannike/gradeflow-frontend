@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8080/api/v1/",
+  baseURL: "https://gradeflow-server.onrender.com/api/v1/",
 });
 
 const teacherService = {
