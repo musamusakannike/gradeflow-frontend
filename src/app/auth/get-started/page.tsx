@@ -276,7 +276,7 @@ export default function GetStartedPage() {
   const validateForm = () => {
     let isValid = true;
     const newErrors: FormErrors = {};
-    const fields = Object.keys(formData) as Array<keyof FormData>;
+    // const fields = Object.keys(formData) as Array<keyof FormData>;
 
     // Only validate fields relevant to the current step
     const fieldsToValidate =
