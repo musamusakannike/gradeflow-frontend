@@ -54,10 +54,10 @@ export default function Hero() {
                 Get Started
               </Link>
               <Link
-                href="#"
+                href="/auth/login"
                 className="px-8 py-4 rounded-lg bg-white text-blue-600 font-medium text-lg border-2 border-blue-600 transition-all duration-300 transform hover:scale-105 hover:bg-blue-50 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                Request a Demo
+                Login
               </Link>
             </div>
 
