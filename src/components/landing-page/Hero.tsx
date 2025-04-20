@@ -48,7 +48,7 @@ export default function Hero() {
 
             <div className="flex flex-wrap gap-4">
               <Link
-                href="#"
+                href="/auth/get-started"
                 className="px-8 py-4 rounded-lg bg-blue-600 text-white font-medium text-lg transition-all duration-300 transform hover:scale-105 hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
                 Get Started
