@@ -4,6 +4,9 @@ interface ResetPasswordProps {
   params: { token: string };
 }
 
-export default function ResetPasswordPage({ params }: ResetPasswordProps) {
-  return <ResetPasswordForm token={params.token} />;
+export default async function ResetPasswordPage({
+  params,
+}: ResetPasswordProps) {
+  const token = await params.token;
+  return <ResetPasswordForm token={token} />;
 }
