@@ -26,7 +26,7 @@ export default function DashboardPage() {
     };
 
     redirectBasedOnRole();
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, router, user]);
 
   if (isLoading) {
     return (
