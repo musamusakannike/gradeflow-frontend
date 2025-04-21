@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import DashboardHeader from "./dashboard-header";
 import DashboardOverview from "./dashboard-overview";
-// import SchoolManagement from "./school-management"
+import SchoolManagement from "./school-management";
 // import UserManagement from "./user-management"
 // import ProfileSettings from "./profile-settings"
 import NotificationsPanel from "./notifications-panel";
@@ -167,8 +167,8 @@ export default function SuperAdminDashboard() {
               >
                 */}
                 {activeTab === "overview" && <DashboardOverview />}
-                {/*{activeTab === "schools" && <SchoolManagement />}
-                {activeTab === "users" && <UserManagement />}
+                {activeTab === "schools" && <SchoolManagement />}
+                {/*{activeTab === "users" && <UserManagement />}
                 {activeTab === "profile" && <ProfileSettings />}
                 {activeTab === "settings" && (
                   <div className="bg-white rounded-xl shadow-md p-6">
