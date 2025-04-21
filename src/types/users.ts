@@ -5,7 +5,8 @@ export const ROLES = {
   TEACHER: "teacher", // Regular teacher
   CLASS_TEACHER: "class_teacher", // Teacher with class oversight
   BURSAR: "bursar", // Fee management
-}
+  PARENT: "parent",
+} as const;
 
 export interface IUser {
   _id?: string
