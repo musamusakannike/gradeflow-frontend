@@ -28,7 +28,7 @@ import DashboardOverview from "./dashboard-overview";
 // import UserManagement from "./user-management"
 // import ProfileSettings from "./profile-settings"
 // import NotificationsPanel from "./notifications-panel"
-// import MessagesPanel from "./messages-panel"
+import MessagesPanel from "./messages-panel"
 
 export default function SuperAdminDashboard() {
   const { logout } = useAuth();
@@ -154,12 +154,13 @@ export default function SuperAdminDashboard() {
                 </div>
               )}
 
+              */}
               {showMessages && (
                 <div className="absolute top-0 right-0 z-10 h-full">
                   <MessagesPanel onClose={() => setShowMessages(false)} />
                 </div>
               )}
-
+              {/*
               <div
                 className={`transition-all duration-300 ${showNotifications || showMessages ? "opacity-50" : "opacity-100"}`}
               >
