@@ -1,12 +1,10 @@
 import ResetPasswordForm from "./ResetPasswordForm";
 
-interface ResetPasswordProps {
-  params: { token: string };
-}
-
-export default async function ResetPasswordPage({
+export default async function Page({
   params,
-}: ResetPasswordProps) {
-  const token = await params.token;
+}: {
+  params: Promise<{ token: string }>;
+}) {
+  const { token } = await params;
   return <ResetPasswordForm token={token} />;
 }
