@@ -13,6 +13,19 @@ export default function DashboardPage() {
     if (!isLoading && !isAuthenticated) {
       router.push("/auth/login");
     }
+    const redirectBasedOnRole = () => {
+      if (user?.role === "super_admin") {
+        router.push("/dashboard/super-admin");
+      } else if (user?.role === "school_admin") {
+        router.push("/dashboard/school-admin");
+      } else if (user?.role === "teacher") {
+        router.push("/dashboard/teacher");
+      } else if (user?.role === "student") {
+        router.push("/dashboard/student");
+      }
+    };
+
+    redirectBasedOnRole();
   }, [isAuthenticated, isLoading, router]);
 
   if (isLoading) {
