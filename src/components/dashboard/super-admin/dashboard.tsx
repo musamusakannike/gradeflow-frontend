@@ -23,7 +23,7 @@ import {
   User,
 } from "lucide-react";
 import DashboardHeader from "./dashboard-header";
-// import DashboardOverview from "./dashboard-overview"
+import DashboardOverview from "./dashboard-overview";
 // import SchoolManagement from "./school-management"
 // import UserManagement from "./user-management"
 // import ProfileSettings from "./profile-settings"
@@ -163,8 +163,9 @@ export default function SuperAdminDashboard() {
               <div
                 className={`transition-all duration-300 ${showNotifications || showMessages ? "opacity-50" : "opacity-100"}`}
               >
-                {activeTab === "overview" && <DashboardOverview />}
-                {activeTab === "schools" && <SchoolManagement />}
+                */}
+              {activeTab === "overview" && <DashboardOverview />}
+              {/*{activeTab === "schools" && <SchoolManagement />}
                 {activeTab === "users" && <UserManagement />}
                 {activeTab === "profile" && <ProfileSettings />}
                 {activeTab === "settings" && (
