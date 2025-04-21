@@ -154,10 +154,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         router.push("/dashboard/super-admin");
         break;
       case USER_ROLES.SUPER_ADMIN:
-        router.push("/dashboard/school-admin");
+        router.push("/dashboard/super-admin");
         break;
       case USER_ROLES.SCHOOL_ADMIN:
-        router.push("/dashboard/principal");
+        router.push("/dashboard/school-admin");
         break;
       case USER_ROLES.TEACHER:
       case USER_ROLES.CLASS_TEACHER:
