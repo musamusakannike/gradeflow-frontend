@@ -27,8 +27,8 @@ import DashboardOverview from "./dashboard-overview";
 // import SchoolManagement from "./school-management"
 // import UserManagement from "./user-management"
 // import ProfileSettings from "./profile-settings"
-// import NotificationsPanel from "./notifications-panel"
-import MessagesPanel from "./messages-panel"
+import NotificationsPanel from "./notifications-panel";
+import MessagesPanel from "./messages-panel";
 
 export default function SuperAdminDashboard() {
   const { logout } = useAuth();
@@ -147,26 +147,27 @@ export default function SuperAdminDashboard() {
                 showMessages={showMessages}
               />
 
-              {/*<div className="flex-1 overflow-auto p-6 relative">
-              {showNotifications && (
-                <div className="absolute top-0 right-0 z-10 h-full">
-                  <NotificationsPanel onClose={() => setShowNotifications(false)} />
-                </div>
-              )}
+              <div className="flex-1 overflow-auto p-6 relative">
+                {showNotifications && (
+                  <div className="absolute top-0 right-0 z-10 h-full">
+                    <NotificationsPanel
+                      onClose={() => setShowNotifications(false)}
+                    />
+                  </div>
+                )}
 
-              */}
-              {showMessages && (
-                <div className="absolute top-0 right-0 z-10 h-full">
-                  <MessagesPanel onClose={() => setShowMessages(false)} />
-                </div>
-              )}
-              {/*
+                {showMessages && (
+                  <div className="absolute top-0 right-0 z-10 h-full">
+                    <MessagesPanel onClose={() => setShowMessages(false)} />
+                  </div>
+                )}
+                {/*
               <div
                 className={`transition-all duration-300 ${showNotifications || showMessages ? "opacity-50" : "opacity-100"}`}
               >
                 */}
-              {activeTab === "overview" && <DashboardOverview />}
-              {/*{activeTab === "schools" && <SchoolManagement />}
+                {activeTab === "overview" && <DashboardOverview />}
+                {/*{activeTab === "schools" && <SchoolManagement />}
                 {activeTab === "users" && <UserManagement />}
                 {activeTab === "profile" && <ProfileSettings />}
                 {activeTab === "settings" && (
@@ -175,8 +176,8 @@ export default function SuperAdminDashboard() {
                     <p className="text-gray-600">System settings will be implemented here.</p>
                   </div>
                 )}
+              </div>*/}
               </div>
-            </div>*/}
             </div>
           </SidebarInset>
         </div>
