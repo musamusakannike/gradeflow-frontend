@@ -29,6 +29,7 @@ export interface User {
   lastName: string;
   email: string;
   role: string;
+  phoneNumber?: string;
 }
 
 // Define auth context type

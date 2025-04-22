@@ -26,7 +26,7 @@ import DashboardHeader from "./dashboard-header";
 import DashboardOverview from "./dashboard-overview";
 import SchoolManagement from "./school-management";
 import UserManagement from "./user-management";
-// import ProfileSettings from "./profile-settings"
+import ProfileSettings from "./profile-settings";
 import NotificationsPanel from "./notifications-panel";
 import MessagesPanel from "./messages-panel";
 
@@ -169,14 +169,15 @@ export default function SuperAdminDashboard() {
                 {activeTab === "overview" && <DashboardOverview />}
                 {activeTab === "schools" && <SchoolManagement />}
                 {activeTab === "users" && <UserManagement />}
-                {/*{activeTab === "profile" && <ProfileSettings />}
+                {activeTab === "profile" && <ProfileSettings />}
                 {activeTab === "settings" && (
                   <div className="bg-white rounded-xl shadow-md p-6">
                     <h2 className="text-2xl font-bold mb-4">Settings</h2>
-                    <p className="text-gray-600">System settings will be implemented here.</p>
+                    <p className="text-gray-600">
+                      System settings will be implemented here.
+                    </p>
                   </div>
                 )}
-              </div>*/}
               </div>
             </div>
           </SidebarInset>
