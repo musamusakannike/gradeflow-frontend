@@ -20,7 +20,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { DashboardHeader } from "./dashboard-header";
 import { DashboardOverview } from "./dashboard-overview";
 import { AcademicManagement } from "./academic-management";
-// import { ClassManagement } from "./class-management"
+import { ClassManagement } from "./class-management"
 // import { SubjectManagement } from "./subject-management"
 // import { StudentManagement } from "./student-management"
 // import { ParentManagement } from "./parent-management"
@@ -58,8 +58,8 @@ export function SchoolAdminDashboard() {
         return <DashboardOverview />;
       case "academic":
         return <AcademicManagement />;
-      //   case "classes":
-      //     return <ClassManagement />
+        case "classes":
+          return <ClassManagement />
       //   case "subjects":
       //     return <SubjectManagement />
       //   case "students":
