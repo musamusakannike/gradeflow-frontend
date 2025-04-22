@@ -16,4 +16,42 @@ export interface ISchool {
   country?: string;
   website?: string;
   logo?: string;
+  // Dashboard specific properties
+  totalStudents: number;
+  totalTeachers: number;
+  totalClasses: number;
+  totalSubjects: number;
+  activeSession: string;
+  activeTerm: string;
+  studentGrowth: number;
+  teacherGrowth: number;
+  upcomingEvents: Array<{
+    id: number;
+    title: string;
+    date: string;
+    type: 'meeting' | 'exam' | 'event';
+  }>;
+  recentMessages: Array<{
+    id: number;
+    sender: string;
+    subject: string;
+    date: string;
+  }>;
+  studentsByClass: Array<{
+    name: string;
+    students: number;
+  }>;
+  studentsByGender: Array<{
+    name: string;
+    value: number;
+  }>;
+  attendanceTrend: Array<{
+    month: string;
+    attendance: number;
+  }>;
+  feeCollection: {
+    total: number;
+    collected: number;
+    pending: number;
+  };
 }
