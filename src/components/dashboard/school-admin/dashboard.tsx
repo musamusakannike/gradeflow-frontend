@@ -17,9 +17,9 @@ import {
   SidebarGroupContent,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/auth-context";
-import { DashboardHeader } from "./dashboard-header"
+import { DashboardHeader } from "./dashboard-header";
 import { DashboardOverview } from "./dashboard-overview";
-// import { AcademicManagement } from "./academic-management"
+import { AcademicManagement } from "./academic-management";
 // import { ClassManagement } from "./class-management"
 // import { SubjectManagement } from "./subject-management"
 // import { StudentManagement } from "./student-management"
@@ -54,10 +54,10 @@ export function SchoolAdminDashboard() {
 
   const renderContent = () => {
     switch (activeTab) {
-      //   case "overview":
-      //     return <DashboardOverview />
-      //   case "academic":
-      //     return <AcademicManagement />
+      case "overview":
+        return <DashboardOverview />;
+      case "academic":
+        return <AcademicManagement />;
       //   case "classes":
       //     return <ClassManagement />
       //   case "subjects":
