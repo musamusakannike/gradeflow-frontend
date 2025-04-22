@@ -79,6 +79,29 @@ const sampleSchools = [
     },
     isActive: true,
     createdAt: "2023-01-15T00:00:00.000Z",
+    city: "Lagos",
+    state: "Lagos State",
+    country: "Nigeria",
+    website: "https://westlake.edu",
+    logo: "",
+    totalStudents: 0,
+    totalTeachers: 0,
+    totalClasses: 0,
+    totalSubjects: 0,
+    activeSession: "2023/2024",
+    activeTerm: "First Term",
+    studentGrowth: 0,
+    teacherGrowth: 0,
+    upcomingEvents: [],
+    recentMessages: [],
+    studentsByClass: [],
+    studentsByGender: [],
+    attendanceTrend: [],
+    feeCollection: {
+      total: 0,
+      collected: 0,
+      pending: 0
+    }
   },
   {
     id: "2",
@@ -93,6 +116,29 @@ const sampleSchools = [
     },
     isActive: true,
     createdAt: "2023-02-20T00:00:00.000Z",
+    city: "Abuja",
+    state: "FCT",
+    country: "Nigeria",
+    website: "https://riverdale.edu",
+    logo: "",
+    totalStudents: 0,
+    totalTeachers: 0,
+    totalClasses: 0,
+    totalSubjects: 0,
+    activeSession: "2023/2024",
+    activeTerm: "First Term",
+    studentGrowth: 0,
+    teacherGrowth: 0,
+    upcomingEvents: [],
+    recentMessages: [],
+    studentsByClass: [],
+    studentsByGender: [],
+    attendanceTrend: [],
+    feeCollection: {
+      total: 0,
+      collected: 0,
+      pending: 0
+    }
   },
   {
     id: "3",
@@ -107,6 +153,29 @@ const sampleSchools = [
     },
     isActive: false,
     createdAt: "2023-03-10T00:00:00.000Z",
+    city: "Port Harcourt",
+    state: "Rivers State",
+    country: "Nigeria",
+    website: "https://lincoln.edu",
+    logo: "",
+    totalStudents: 0,
+    totalTeachers: 0,
+    totalClasses: 0,
+    totalSubjects: 0,
+    activeSession: "2023/2024",
+    activeTerm: "First Term",
+    studentGrowth: 0,
+    teacherGrowth: 0,
+    upcomingEvents: [],
+    recentMessages: [],
+    studentsByClass: [],
+    studentsByGender: [],
+    attendanceTrend: [],
+    feeCollection: {
+      total: 0,
+      collected: 0,
+      pending: 0
+    }
   },
   {
     id: "4",
@@ -121,6 +190,29 @@ const sampleSchools = [
     },
     isActive: true,
     createdAt: "2023-04-05T00:00:00.000Z",
+    city: "Kano",
+    state: "Kano State",
+    country: "Nigeria",
+    website: "https://oakridge.edu",
+    logo: "",
+    totalStudents: 0,
+    totalTeachers: 0,
+    totalClasses: 0,
+    totalSubjects: 0,
+    activeSession: "2023/2024",
+    activeTerm: "First Term",
+    studentGrowth: 0,
+    teacherGrowth: 0,
+    upcomingEvents: [],
+    recentMessages: [],
+    studentsByClass: [],
+    studentsByGender: [],
+    attendanceTrend: [],
+    feeCollection: {
+      total: 0,
+      collected: 0,
+      pending: 0
+    }
   },
   {
     id: "5",
@@ -135,6 +227,29 @@ const sampleSchools = [
     },
     isActive: true,
     createdAt: "2023-05-12T00:00:00.000Z",
+    city: "Ibadan",
+    state: "Oyo State",
+    country: "Nigeria",
+    website: "https://greenfield.edu",
+    logo: "",
+    totalStudents: 0,
+    totalTeachers: 0,
+    totalClasses: 0,
+    totalSubjects: 0,
+    activeSession: "2023/2024",
+    activeTerm: "First Term",
+    studentGrowth: 0,
+    teacherGrowth: 0,
+    upcomingEvents: [],
+    recentMessages: [],
+    studentsByClass: [],
+    studentsByGender: [],
+    attendanceTrend: [],
+    feeCollection: {
+      total: 0,
+      collected: 0,
+      pending: 0
+    }
   },
 ];
 
@@ -168,7 +283,17 @@ export default function SchoolManagement() {
     const fetchSchools = async () => {
       // In a real app, this would be an API call
       setTimeout(() => {
-        setSchools(sampleSchools);
+        setSchools(sampleSchools.map(school => ({
+          ...school,
+          totalStudents: 0,
+          totalTeachers: 0, 
+          totalClasses: 0,
+          totalSubjects: 0,
+          city: '',
+          state: '',
+          country: 'Nigeria',
+          website: '',
+        })));
         setIsLoading(false);
       }, 1000);
     };
@@ -200,6 +325,10 @@ export default function SchoolManagement() {
         name: newSchool.name,
         address: newSchool.address,
         email: newSchool.email,
+        totalStudents: 0,
+        totalTeachers: 0,
+        totalClasses: 0,
+        totalSubjects: 0,
         phoneNumber: newSchool.phoneNumber,
         admin: {
           firstName: newSchool.adminFirstName,
@@ -212,6 +341,21 @@ export default function SchoolManagement() {
         state: newSchool.state,
         country: newSchool.country,
         website: newSchool.website,
+        logo: "",
+        activeSession: "2023/2024",
+        activeTerm: "First Term",
+        studentGrowth: 0,
+        teacherGrowth: 0,
+        upcomingEvents: [],
+        recentMessages: [],
+        studentsByClass: [],
+        studentsByGender: [],
+        attendanceTrend: [],
+        feeCollection: {
+          total: 0,
+          collected: 0,
+          pending: 0
+        }
       };
 
       setSchools((prevSchools) => [...prevSchools, newSchoolData]);
