@@ -1,5 +1,5 @@
 export interface ISchool {
-  id: string;
+  _id: string;
   name: string;
   address: string;
   email: string;

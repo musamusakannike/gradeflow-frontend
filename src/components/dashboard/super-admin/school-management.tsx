@@ -63,197 +63,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/use-toast";
 import { ISchool } from "@/types/school";
-
-// Sample school data
-const sampleSchools = [
-  {
-    id: "1",
-    name: "Westlake Academy",
-    address: "123 School Street, Lagos",
-    email: "info@westlake.edu",
-    phoneNumber: "+2341234567890",
-    admin: {
-      firstName: "Jane",
-      lastName: "Smith",
-      email: "jane@westlake.edu",
-    },
-    isActive: true,
-    createdAt: "2023-01-15T00:00:00.000Z",
-    city: "Lagos",
-    state: "Lagos State",
-    country: "Nigeria",
-    website: "https://westlake.edu",
-    logo: "",
-    totalStudents: 0,
-    totalTeachers: 0,
-    totalClasses: 0,
-    totalSubjects: 0,
-    activeSession: "2023/2024",
-    activeTerm: "First Term",
-    studentGrowth: 0,
-    teacherGrowth: 0,
-    upcomingEvents: [],
-    recentMessages: [],
-    studentsByClass: [],
-    studentsByGender: [],
-    attendanceTrend: [],
-    feeCollection: {
-      total: 0,
-      collected: 0,
-      pending: 0
-    }
-  },
-  {
-    id: "2",
-    name: "Riverdale School District",
-    address: "456 School Avenue, Abuja",
-    email: "info@riverdale.edu",
-    phoneNumber: "+2341234567891",
-    admin: {
-      firstName: "Michael",
-      lastName: "Chen",
-      email: "michael@riverdale.edu",
-    },
-    isActive: true,
-    createdAt: "2023-02-20T00:00:00.000Z",
-    city: "Abuja",
-    state: "FCT",
-    country: "Nigeria",
-    website: "https://riverdale.edu",
-    logo: "",
-    totalStudents: 0,
-    totalTeachers: 0,
-    totalClasses: 0,
-    totalSubjects: 0,
-    activeSession: "2023/2024",
-    activeTerm: "First Term",
-    studentGrowth: 0,
-    teacherGrowth: 0,
-    upcomingEvents: [],
-    recentMessages: [],
-    studentsByClass: [],
-    studentsByGender: [],
-    attendanceTrend: [],
-    feeCollection: {
-      total: 0,
-      collected: 0,
-      pending: 0
-    }
-  },
-  {
-    id: "3",
-    name: "Lincoln High",
-    address: "789 Education Road, Port Harcourt",
-    email: "info@lincoln.edu",
-    phoneNumber: "+2341234567892",
-    admin: {
-      firstName: "Emily",
-      lastName: "Rodriguez",
-      email: "emily@lincoln.edu",
-    },
-    isActive: false,
-    createdAt: "2023-03-10T00:00:00.000Z",
-    city: "Port Harcourt",
-    state: "Rivers State",
-    country: "Nigeria",
-    website: "https://lincoln.edu",
-    logo: "",
-    totalStudents: 0,
-    totalTeachers: 0,
-    totalClasses: 0,
-    totalSubjects: 0,
-    activeSession: "2023/2024",
-    activeTerm: "First Term",
-    studentGrowth: 0,
-    teacherGrowth: 0,
-    upcomingEvents: [],
-    recentMessages: [],
-    studentsByClass: [],
-    studentsByGender: [],
-    attendanceTrend: [],
-    feeCollection: {
-      total: 0,
-      collected: 0,
-      pending: 0
-    }
-  },
-  {
-    id: "4",
-    name: "Oakridge Elementary",
-    address: "101 Learning Lane, Kano",
-    email: "info@oakridge.edu",
-    phoneNumber: "+2341234567893",
-    admin: {
-      firstName: "James",
-      lastName: "Wilson",
-      email: "james@oakridge.edu",
-    },
-    isActive: true,
-    createdAt: "2023-04-05T00:00:00.000Z",
-    city: "Kano",
-    state: "Kano State",
-    country: "Nigeria",
-    website: "https://oakridge.edu",
-    logo: "",
-    totalStudents: 0,
-    totalTeachers: 0,
-    totalClasses: 0,
-    totalSubjects: 0,
-    activeSession: "2023/2024",
-    activeTerm: "First Term",
-    studentGrowth: 0,
-    teacherGrowth: 0,
-    upcomingEvents: [],
-    recentMessages: [],
-    studentsByClass: [],
-    studentsByGender: [],
-    attendanceTrend: [],
-    feeCollection: {
-      total: 0,
-      collected: 0,
-      pending: 0
-    }
-  },
-  {
-    id: "5",
-    name: "Greenfield Academy",
-    address: "202 Knowledge Street, Ibadan",
-    email: "info@greenfield.edu",
-    phoneNumber: "+2341234567894",
-    admin: {
-      firstName: "Amanda",
-      lastName: "Patel",
-      email: "amanda@greenfield.edu",
-    },
-    isActive: true,
-    createdAt: "2023-05-12T00:00:00.000Z",
-    city: "Ibadan",
-    state: "Oyo State",
-    country: "Nigeria",
-    website: "https://greenfield.edu",
-    logo: "",
-    totalStudents: 0,
-    totalTeachers: 0,
-    totalClasses: 0,
-    totalSubjects: 0,
-    activeSession: "2023/2024",
-    activeTerm: "First Term",
-    studentGrowth: 0,
-    teacherGrowth: 0,
-    upcomingEvents: [],
-    recentMessages: [],
-    studentsByClass: [],
-    studentsByGender: [],
-    attendanceTrend: [],
-    feeCollection: {
-      total: 0,
-      collected: 0,
-      pending: 0
-    }
-  },
-];
+import { useAuth } from "@/contexts/auth-context";
 
 export default function SchoolManagement() {
+  const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+  const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [schools, setSchools] = useState<ISchool[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -263,8 +77,22 @@ export default function SchoolManagement() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showViewSchoolDialog, setShowViewSchoolDialog] = useState(false);
   const [currentSchool, setCurrentSchool] = useState<ISchool | null>(null);
-  const [newSchool, setNewSchool] = useState({
-    name: "",
+  const [newSchool, setNewSchool] = useState<{
+    schoolName: string;
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    phoneNumber: string;
+    email: string;
+    website: string;
+    logo?: string;
+    adminFirstName: string;
+    adminLastName: string;
+    adminEmail: string;
+    adminPassword: string;
+  }>({
+    schoolName: "",
     address: "",
     city: "",
     state: "",
@@ -281,27 +109,27 @@ export default function SchoolManagement() {
   useEffect(() => {
     // Simulate API call to fetch schools
     const fetchSchools = async () => {
-      // In a real app, this would be an API call
-      setTimeout(() => {
-        setSchools(sampleSchools.map(school => ({
-          ...school,
-          totalStudents: 0,
-          totalTeachers: 0, 
-          totalClasses: 0,
-          totalSubjects: 0,
-          city: '',
-          state: '',
-          country: 'Nigeria',
-          website: '',
-        })));
+      try {
+        const response = await fetch(`${SERVER_URL}/schools`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        console.log(data);
+        setSchools(data.data);
         setIsLoading(false);
-      }, 1000);
+      } catch (error) {
+        console.error("Error fetching schools:", error);
+        return [];
+      }
     };
 
     fetchSchools();
-  }, []);
+  }, [token, SERVER_URL]);
 
-  const filteredSchools = schools.filter((school) => {
+  const filteredSchools = schools?.filter((school) => {
     const matchesSearch =
       school.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       school.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -314,15 +142,45 @@ export default function SchoolManagement() {
     return matchesSearch;
   });
 
-  const handleAddSchool = () => {
-    // In a real app, this would be an API call
-    setIsLoading(true);
+  const validateSchoolForm = () => {
+    const errors: string[] = [];
+    if (!newSchool.schoolName.trim()) errors.push("School name is required.");
+    if (!newSchool.address.trim()) errors.push("Address is required.");
+    if (!newSchool.city.trim()) errors.push("City is required.");
+    if (!newSchool.state.trim()) errors.push("State is required.");
+    if (!newSchool.country.trim()) errors.push("Country is required.");
+    if (!newSchool.phoneNumber.trim()) errors.push("Phone number is required.");
+    if (
+      !newSchool.email.trim() ||
+      !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(newSchool.email)
+    )
+      errors.push("Valid email is required.");
+    if (!newSchool.adminFirstName.trim())
+      errors.push("Admin first name is required.");
+    if (!newSchool.adminLastName.trim())
+      errors.push("Admin last name is required.");
+    if (
+      !newSchool.adminEmail.trim() ||
+      !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(newSchool.adminEmail)
+    )
+      errors.push("Valid admin email is required.");
+    if (!newSchool.adminPassword.trim() || newSchool.adminPassword.length < 6)
+      errors.push("Admin password is required (min 6 chars).");
+    return errors;
+  };
 
-    // Simulate API call
-    setTimeout(() => {
-      const newSchoolData: ISchool = {
-        id: (schools.length + 1).toString(),
-        name: newSchool.name,
+  const handleAddSchool = async () => {
+    // Validate form before submitting
+    const errors = validateSchoolForm();
+    if (errors.length > 0) {
+      errors.forEach((err) => toast("Validation Error", { description: err }));
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const newSchoolData = {
+        _id: (schools.length + 1).toString(),
+        schoolName: newSchool.schoolName,
         address: newSchool.address,
         email: newSchool.email,
         totalStudents: 0,
@@ -330,18 +188,17 @@ export default function SchoolManagement() {
         totalClasses: 0,
         totalSubjects: 0,
         phoneNumber: newSchool.phoneNumber,
-        admin: {
-          firstName: newSchool.adminFirstName,
-          lastName: newSchool.adminLastName,
-          email: newSchool.adminEmail,
-        },
+        adminFirstName: newSchool.adminFirstName,
+        adminLastName: newSchool.adminLastName,
+        adminEmail: newSchool.adminEmail,
+        adminPassword: newSchool.adminPassword,
         isActive: true,
         createdAt: new Date().toISOString(),
         city: newSchool.city,
         state: newSchool.state,
         country: newSchool.country,
-        website: newSchool.website,
-        logo: "",
+        ...(newSchool.website ? { website: newSchool.website } : {}),
+        ...(newSchool.logo ? { logo: newSchool.logo } : {}),
         activeSession: "2023/2024",
         activeTerm: "First Term",
         studentGrowth: 0,
@@ -354,17 +211,36 @@ export default function SchoolManagement() {
         feeCollection: {
           total: 0,
           collected: 0,
-          pending: 0
-        }
+          pending: 0,
+        },
       };
 
-      setSchools((prevSchools) => [...prevSchools, newSchoolData]);
+      const response = await fetch(`${SERVER_URL}/schools`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newSchoolData),
+      });
+
+      if (response.ok) {
+        toast("School Added", {
+          description: `${newSchool.schoolName} has been successfully added.`,
+        });
+      } else {
+        toast("Error", {
+          description: "Failed to add school.",
+        });
+        return;
+      }
+
       setIsLoading(false);
       setShowAddSchoolDialog(false);
 
       // Reset form
       setNewSchool({
-        name: "",
+        schoolName: "",
         address: "",
         city: "",
         state: "",
@@ -377,11 +253,12 @@ export default function SchoolManagement() {
         adminEmail: "",
         adminPassword: "",
       });
-
-      toast("School Added", {
-        description: `${newSchool.name} has been successfully added.`,
+    } catch (error) {
+      console.error("Error adding school:", error);
+      toast("Error", {
+        description: "Failed to add school.",
       });
-    }, 1000);
+    }
   };
 
   const handleEditSchool = () => {
@@ -393,7 +270,7 @@ export default function SchoolManagement() {
     // Simulate API call
     setTimeout(() => {
       const updatedSchools = schools.map((school) => {
-        if (school.id === currentSchool.id) {
+        if (school._id === currentSchool._id) {
           return {
             ...school,
             name: currentSchool.name,
@@ -402,9 +279,9 @@ export default function SchoolManagement() {
             phoneNumber: currentSchool.phoneNumber,
             admin: {
               ...school.admin,
-              firstName: currentSchool.admin.firstName,
-              lastName: currentSchool.admin.lastName,
-              email: currentSchool.admin.email,
+              firstName: currentSchool.admin?.firstName,
+              lastName: currentSchool.admin?.lastName,
+              email: currentSchool.admin?.email,
             },
           };
         }
@@ -430,7 +307,7 @@ export default function SchoolManagement() {
     // Simulate API call
     setTimeout(() => {
       const updatedSchools = schools.filter(
-        (school) => school.id !== currentSchool.id
+        (school) => school._id !== currentSchool._id
       );
 
       setSchools(updatedSchools);
@@ -450,7 +327,7 @@ export default function SchoolManagement() {
     // Simulate API call
     setTimeout(() => {
       const updatedSchools = schools.map((s) => {
-        if (s.id === school.id) {
+        if (s._id === school._id) {
           return {
             ...s,
             isActive: !s.isActive,
@@ -582,7 +459,7 @@ export default function SchoolManagement() {
                     </TableRow>
                   ) : (
                     filteredSchools.map((school) => (
-                      <TableRow key={school.id} className="group">
+                      <TableRow key={school._id} className="group">
                         <TableCell className="font-medium">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -591,25 +468,25 @@ export default function SchoolManagement() {
                             <div>
                               <div>{school.name}</div>
                               <div className="text-xs text-gray-500 md:hidden">
-                                {school.admin.firstName} {school.admin.lastName}
+                                {school.admin?.firstName} {school.admin?.lastName}
                               </div>
                             </div>
                           </div>
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
-                          {school.admin.firstName} {school.admin.lastName}
+                          {school.admin?.firstName} {school.admin?.lastName}
                           <div className="text-xs text-gray-500">
-                            {school.admin.email}
+                            {school.admin?.email}
                           </div>
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
-                          {school.email}
+                          {school?.email}
                           <div className="text-xs text-gray-500">
-                            {school.phoneNumber}
+                            {school?.phoneNumber}
                           </div>
                         </TableCell>
                         <TableCell>
-                          {school.isActive ? (
+                          {school?.isActive ? (
                             <Badge
                               variant="outline"
                               className="bg-green-50 text-green-600 hover:bg-green-50 border-green-200"
@@ -736,9 +613,9 @@ export default function SchoolManagement() {
                   <Label htmlFor="name">School Name</Label>
                   <Input
                     id="name"
-                    value={newSchool.name}
+                    value={newSchool.schoolName}
                     onChange={(e) =>
-                      setNewSchool({ ...newSchool, name: e.target.value })
+                      setNewSchool({ ...newSchool, schoolName: e.target.value })
                     }
                     placeholder="Enter school name"
                   />
