@@ -261,90 +261,141 @@ export default function SchoolManagement() {
     }
   };
 
-  const handleEditSchool = () => {
+  const handleEditSchool = async () => {
     if (!currentSchool) return;
-
-    // In a real app, this would be an API call
     setIsLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      const updatedSchools = schools.map((school) => {
-        if (school._id === currentSchool._id) {
-          return {
-            ...school,
-            name: currentSchool.name,
-            address: currentSchool.address,
-            email: currentSchool.email,
-            phoneNumber: currentSchool.phoneNumber,
-            admin: {
-              ...school.admin,
-              firstName: currentSchool.admin?.firstName,
-              lastName: currentSchool.admin?.lastName,
-              email: currentSchool.admin?.email,
-            },
-          };
+    try {
+      const response = await fetch(
+        `${SERVER_URL}/schools/${currentSchool._id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(currentSchool),
         }
-        return school;
-      });
-
-      setSchools(updatedSchools);
-      setIsLoading(false);
-      setShowEditSchoolDialog(false);
-
-      toast("School Updated", {
-        description: `${currentSchool.name} has been successfully updated.`,
-      });
-    }, 1000);
-  };
-
-  const handleDeleteSchool = () => {
-    if (!currentSchool) return;
-
-    // In a real app, this would be an API call
-    setIsLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      const updatedSchools = schools.filter(
-        (school) => school._id !== currentSchool._id
       );
-
-      setSchools(updatedSchools);
-      setIsLoading(false);
-      setShowDeleteDialog(false);
-
-      toast("School Deleted", {
-        description: `${currentSchool.name} has been successfully deleted.`,
-      });
-    }, 1000);
+      if (response.ok) {
+        toast("School Updated", {
+          description: `${currentSchool.name} has been successfully updated.`,
+        });
+        // Optionally, refresh the school list
+        const fetchSchools = async () => {
+          try {
+            const response = await fetch(`${SERVER_URL}/schools`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            const data = await response.json();
+            console.log(data);
+            setSchools(data.data);
+          } catch (error) {
+            console.error("Error fetching schools:", error);
+            return [];
+          }
+        };
+        fetchSchools();
+      } else {
+        toast("Error", { description: "Failed to update school." });
+      }
+    } catch (error) {
+      console.error("Error updating school:", error);
+      toast("Error", { description: "Failed to update school." });
+    }
+    setIsLoading(false);
+    setShowEditSchoolDialog(false);
   };
 
-  const handleToggleStatus = (school: ISchool) => {
-    // In a real app, this would be an API call
+  const handleDeleteSchool = async () => {
+    if (!currentSchool) return;
     setIsLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      const updatedSchools = schools.map((s) => {
-        if (s._id === school._id) {
-          return {
-            ...s,
-            isActive: !s.isActive,
-          };
+    try {
+      const response = await fetch(
+        `${SERVER_URL}/schools/${currentSchool._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-        return s;
-      });
+      );
+      if (response.ok) {
+        toast("School Deleted", {
+          description: `${currentSchool.name} has been successfully deleted.`,
+        });
+        const fetchSchools = async () => {
+          try {
+            const response = await fetch(`${SERVER_URL}/schools`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            const data = await response.json();
+            console.log(data);
+            setSchools(data.data);
+          } catch (error) {
+            console.error("Error fetching schools:", error);
+            return [];
+          }
+        };
+        fetchSchools();
+      } else {
+        toast("Error", { description: "Failed to delete school." });
+      }
+    } catch (error) {
+      console.error("Error deleting school:", error);
+      toast("Error", { description: "Failed to delete school." });
+    }
+    setIsLoading(false);
+    setShowDeleteDialog(false);
+  };
 
-      setSchools(updatedSchools);
-      setIsLoading(false);
-
-      toast(`School ${school.isActive ? "Deactivated" : "Activated"}`, {
-        description: `${school.name} has been ${
-          school.isActive ? "deactivated" : "activated"
-        }.`,
+  const handleToggleStatus = async (school: ISchool) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${SERVER_URL}/schools/${school._id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...school, isActive: !school.isActive }),
       });
-    }, 500);
+      if (response.ok) {
+        toast(`School ${school.isActive ? "Deactivated" : "Activated"}`, {
+          description: `${school.name} has been ${
+            school.isActive ? "deactivated" : "activated"
+          }.`,
+        });
+        const fetchSchools = async () => {
+          try {
+            const response = await fetch(`${SERVER_URL}/schools`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            const data = await response.json();
+            console.log(data);
+            setSchools(data.data);
+          } catch (error) {
+            console.error("Error fetching schools:", error);
+            return [];
+          }
+        };
+        fetchSchools();
+      } else {
+        toast("Error", { description: "Failed to update school status." });
+      }
+    } catch (error) {
+      console.error("Error updating school status:", error);
+      toast("Error", { description: "Failed to update school status." });
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -468,7 +519,8 @@ export default function SchoolManagement() {
                             <div>
                               <div>{school.name}</div>
                               <div className="text-xs text-gray-500 md:hidden">
-                                {school.admin?.firstName} {school.admin?.lastName}
+                                {school.admin?.firstName}{" "}
+                                {school.admin?.lastName}
                               </div>
                             </div>
                           </div>
